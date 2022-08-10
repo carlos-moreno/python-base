@@ -1,0 +1,5 @@
+Carlos,carlos@gmail.com
+Gabriel,gabriel@gmail.com
+Bruno,bruno@gmail.com
+Maria,maria@outlook.com
+João,joao@outlook.com
