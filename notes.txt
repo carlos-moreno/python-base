@@ -1,0 +1,2 @@
+Minha Primeira nota	tech	Isso é uma nota de teste.
+Minha Primeira nota	tech	Python é muito legal. Vaiiiiii
