@@ -26,6 +26,7 @@ __version__ = "0.1.3"
 __author__ = "Carlos Moreno"
 __license__ = "Unlicense"
 
+from email import message
 import os
 import sys
 
@@ -33,13 +34,21 @@ import sys
 arguments = {"lang": None, "count": 1}
 
 for arg in sys.argv[1:]:
-    # TODO: Tratar ValueError
-    key, value = arg.split("=")
+    try:
+        key, value = arg.split("=")
+    except ValueError as e:
+        # TODO: Logging
+        print(f"{e}")
+        print("You need to use `=`")
+        print(f"You passed {arg}")
+        print("try with --key=value")
+        sys.exit(1)
     key = key.lstrip("-").strip()
     value = value.strip()
     if key not in arguments:
         print(f"Invalid option ==> {key}")
     arguments[key] = value
+
 
 current_language = arguments["lang"]
 
@@ -60,6 +69,13 @@ msg = {
     "fr_FR": "Bonjour Monde",
 }
 
-print(
-    msg[current_language] * int(arguments["count"])
-)
+# message = msg.get(current_language, msg["en_US"])
+
+try:
+    message = msg[current_language]
+except KeyError as e:
+    print(f"[Error] {str(e)}")
+    print(f"Language is invalid, choose from: {list(msg.keys())}")
+    sys.exit(1)
+
+print(message * int(arguments["count"]))
