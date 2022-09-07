@@ -31,8 +31,27 @@ __author__ = "Carlos Moreno"
 
 import os
 import sys
+import logging
 
 from datetime import datetime
+
+# BOILERPLATE
+# TODO: usar função
+# TODO: usar lib (loguru)
+log_level = os.getenv("LOG_LEVEL", "WARNING").upper()
+
+log = logging.Logger(__name__, level=log_level)
+
+ch = logging.StreamHandler()
+ch.setLevel(log_level)
+
+fmt = logging.Formatter(
+    "%(asctime)s %(name)s %(levelname)s l:%(lineno)d "
+    "f:%(filename)s: %(message)s"
+)
+ch.setFormatter(fmt)
+
+log.addHandler(ch)
 
 arguments = sys.argv[1:]
 
@@ -42,23 +61,24 @@ if not arguments:
     n2 = input("n2: ")
     arguments = [operation, n1, n2]
 elif len(arguments) != 3:
-    print("Número de argumentos inválidos.")
-    print("ex.: `sum 5 5`")
+    log.error("Número de argumentos inválidos. Tente `sum 5 5`")
     sys.exit(1)
 
 operation, *nums = arguments
 
 valid_operations = ("sum", "sub", "mul", "div")
 if operation not in valid_operations:
-    print("Operação inválida.")
-    print(valid_operations)
+    log.error(
+        "Operação inválida. Tente usar uma das opções %s", valid_operations
+    )
     sys.exit(1)
 
 validated_nums = []
 for num in nums:
     # TODO: Repetição while + exceptions
     if not num.replace(".", "").isdigit():
-        print(f"Número inválido {num}")
+        log.error("Número inválido: %s", num)
+        sys.exit(1)
     if "." in num:
         num = float(num)
     else:
@@ -68,7 +88,7 @@ for num in nums:
 try:
     n1, n2 = validated_nums
 except ValueError as e:
-    print(f"{str(e)}")
+    log.error(str(e))
     sys.exit(1)
 
 # TODO: Usar dict de funções
@@ -92,8 +112,11 @@ print(f"{result}")
 
 try:
     with open(filepath, "a") as file_:
-        file_.write(f"{timestamp} - {user} -->  {operation}, {n1}, {n2} = {result}\n")
+        file_.write(
+            f"{timestamp} - {user} -->  {operation}, {n1}, {n2} = {result}\n"
+        )
 except PermissionError as e:
-    # TODO: Logging
-    print(f"{str(e)}")
+    log.error(
+        str(e),
+    )
     sys.exit(1)
