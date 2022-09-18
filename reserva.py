@@ -76,8 +76,8 @@ except FileNotFoundError:
     log.error("Arquivo não existe!")
     sys.exit(1)
 
-print("Reserva Hotel Pythonico")
-print("-" * 40)
+print("Reserva no Hotel Pythonico da Linux Tips")
+print("-" * 52)
 if len(ocupados) == len(quartos):
     print(f"Hotel Lotado \U0001F6D1")
     sys.exit(1)
@@ -90,7 +90,7 @@ for codigo, dados in quartos.items():
     disponivel = "\U0001F6AB" if not dados["disponivel"] else "\U00002705"
     print(f"{codigo}: {nome_quarto} - R$ {preco:.2f} - {disponivel}")
 
-print("-" * 40)
+print("-" * 52)
 
 try:
     quarto = int(input("Número do quarto: ").strip())
