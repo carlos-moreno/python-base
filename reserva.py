@@ -96,7 +96,7 @@ try:
     quarto = int(input("Número do quarto: ").strip())
     if not quartos[quarto]["disponivel"]:
         print(f"O quarto {quarto} não está disponível.")
-        sys.exit(1)
+        sys.exit(0)
 except ValueError:
     log.error("Número inválido, digite apenas digitos.")
     sys.exit(1)
