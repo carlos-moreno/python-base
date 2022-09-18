@@ -1,0 +1,4 @@
+1, Suíte Master, 500
+2, Quarto Família, 200
+3, Quarto Single, 100
+4, Quarto Simples, 50
