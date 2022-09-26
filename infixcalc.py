@@ -53,9 +53,23 @@ ch.setFormatter(fmt)
 
 log.addHandler(ch)
 
-while True:
+arguments = sys.argv[1:]
 
-    arguments = sys.argv[1:]
+valid_operations = {
+    "sum": lambda a, b: a + b, 
+    "sub": lambda a, b: a - b, 
+    "mul": lambda a, b: a * b, 
+    "div": lambda a, b: a / b,
+}
+
+path = os.curdir
+filepath = os.path.join(path, "infixcalc.log")
+timestamp = datetime.now().isoformat()
+user = os.getenv("USER", "guest")
+
+
+
+while True:
 
     if not arguments:
         operation = input("operação: ")
@@ -68,7 +82,6 @@ while True:
 
     operation, *nums = arguments
 
-    valid_operations = ("sum", "sub", "mul", "div")
     if operation not in valid_operations:
         log.error(
             "Operação inválida. Tente usar uma das opções %s", valid_operations
@@ -92,23 +105,8 @@ while True:
     except ValueError as e:
         log.error(str(e))
         sys.exit(1)
-
-    # TODO: Usar dict de funções
-    if operation == "sum":
-        result = n1 + n2
-    elif operation == "sub":
-        result = n1 - n2
-    elif operation == "mul":
-        result = n1 * n2
-    elif operation == "div" and n2 > 0:
-        result = n1 / n2
-    elif operation == "div" and n2 <= 0:
-        result = "Operação inválida -> divisão por zero"
-
-    path = os.curdir
-    filepath = os.path.join(path, "infixcalc.log")
-    timestamp = datetime.now().isoformat()
-    user = os.getenv("USER", "guest")
+    
+    result = valid_operations[operation](n1, n2)
 
     print(f"{result}")
 
@@ -122,6 +120,8 @@ while True:
             str(e),
         )
         sys.exit(1)
+    
+    arguments = None
 
     if input(
         "Pressione enter parar continuar ou qualquer outra tecla para sair"
