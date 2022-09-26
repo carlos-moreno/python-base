@@ -15,8 +15,6 @@ import os
 import logging
 from logging import handlers
 
-# BOILERPLATE
-# TODO: usar lib (loguru)
 log_level = os.getenv("LOG_LEVEL", "WARNING").upper()
 
 log = logging.Logger("alerta.py", level=log_level)

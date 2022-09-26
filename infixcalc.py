@@ -36,9 +36,6 @@ import logging
 
 from datetime import datetime
 
-# BOILERPLATE
-# TODO: usar função
-# TODO: usar lib (loguru)
 log_level = os.getenv("LOG_LEVEL", "WARNING").upper()
 
 log = logging.Logger(__name__, level=log_level)
