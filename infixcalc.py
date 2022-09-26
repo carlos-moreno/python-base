@@ -31,6 +31,7 @@ __author__ = "Carlos Moreno"
 
 import os
 import sys
+import operator
 import logging
 
 from datetime import datetime
@@ -56,10 +57,10 @@ log.addHandler(ch)
 arguments = sys.argv[1:]
 
 valid_operations = {
-    "sum": lambda a, b: a + b, 
-    "sub": lambda a, b: a - b, 
-    "mul": lambda a, b: a * b, 
-    "div": lambda a, b: a / b,
+    "sum": operator.add, 
+    "sub": operator.sub, 
+    "mul": operator.mul, 
+    "div": operator.truediv,
 }
 
 path = os.curdir
