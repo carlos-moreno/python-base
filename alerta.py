@@ -16,7 +16,6 @@ import logging
 from logging import handlers
 
 # BOILERPLATE
-# TODO: usar função
 # TODO: usar lib (loguru)
 log_level = os.getenv("LOG_LEVEL", "WARNING").upper()
 
@@ -33,26 +32,37 @@ ch.setFormatter(fmt)
 
 log.addHandler(ch)
 
+
+# TODO: Mover para pacote de utilidades
+def is_completely_filled(dict_of_inputs):
+    """Returns a boolean telling if a dict is completely filled."""
+    info_size = len(dict_of_inputs)
+    filled_size = len(
+        [value for value in dict_of_inputs.values() if value is not None]
+    )
+
+    return info_size == filled_size
+
+
+def read_inputs_for_dict(dict_of_info):
+    """Reads information for a dict from user input."""
+    for key in dict_of_info.keys():
+        if dict_of_info[key] is not None:
+            continue
+        try:
+            dict_of_info[key] = float(input(f"Qual a {key}? ").strip())
+        except ValueError:
+            log.error("%s inválida, digite números", key)
+            sys.exit(1)
+
+
 info = {
     "temperatura": None,
     "umidade": None
 }
 
-while True:
-    info_size = len(info.values())
-    filled_size = len([value for value in info.values() if value is not None])
-
-    if info_size == filled_size:
-        break
-
-    for key in info.keys():
-        if info[key] is not None:
-            continue
-        try:
-            info[key] = float(input(f"Qual a {key}? ").strip())
-        except ValueError:
-            log.error("%s inválida, digite números", key)
-            sys.exit(1)
+while not is_completely_filled(info):
+    read_inputs_for_dict(info)    
 
 temperatura, umidade = info.values()
 
